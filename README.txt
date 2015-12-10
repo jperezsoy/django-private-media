@@ -51,6 +51,10 @@ To generalise this, also add::
 
     PRIVATE_MEDIA_PERMISSIONS = 'myapp.permissions.MyPermissionClass'
     PRIVATE_MEDIA_PERMISSIONS_OPTIONS = {'arg1': 1, ...}  # (optional) kwargs to init
+    
+for the token authentication with djangorestframewok::
+
+    PRIVATE_REST_FRAMEWORK_AUTH = True
 
 This permissions class must have the method::
 
