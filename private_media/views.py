@@ -41,14 +41,35 @@ else:
     permissions = DefaultPrivatePermissions()
 
 
-def serve_private_file(request, path):
-    """
-    Serve private files to users with read permission.
-    """
-    logger.debug('Serving {0} to {1}'.format(path, request.user))
-    if not permissions.has_read_permission(request, path):
-        if settings.DEBUG:
-            raise PermissionDenied
-        else:
-            raise Http404('File not found')
-    return server.serve(request, path=path)
+#condition for validation of RESTFRAMEWORK
+
+if hasattr(settings,'PRIVATE_REST_FRAMEWORK_AUTH'):
+    if settings.PRIVATE_REST_FRAMEWORK_AUTH:
+
+        from rest_framework.views import APIView
+
+        class serve_private_fileRest(APIView):
+            lookup_url_kwarg = "path"
+            def get(self, request, *args, **kw):
+                path = self.kwargs.get(self.lookup_url_kwarg)
+                logger.debug('Serving {0} to {1}'.format(path, request.user))
+                if not permissions.has_read_permission(request, path):
+                    if settings.DEBUG:
+                        raise PermissionDenied
+                    else:
+                        raise Http404('File not found')
+                return server.serve(request, path=path)
+    else:
+        pass
+else:
+    def serve_private_file(request, path):
+        """
+        Serve private files to users with read permission.
+        """
+        logger.debug('Serving {0} to {1}'.format(path, request.user))
+        if not permissions.has_read_permission(request, path):
+            if settings.DEBUG:
+                raise PermissionDenied
+            else:
+                raise Http404('File not found')
+        return server.serve(request, path=path)
