@@ -10,3 +10,10 @@ Added missing import ImproperlyConfigured
 -----
 Changed mimetype to content_type to work with Django 1.7
 
+0.1.4
+-----
+add  token authentication with djangorestframewok:
+
+0.1.5
+-----
+delete patterns for Django 1.11
